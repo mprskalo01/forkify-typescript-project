@@ -1,12 +1,25 @@
-// Define type for HTML element
-const recipeContainer: HTMLElement | null = document.querySelector('.recipe');
+interface Ingredients {
+  quantity: number;
+  unit: string;
+  description: string;
+}
+interface Recipe {
+  id: string;
+  title: string;
+  publisher: string;
+  sourceUrl: string;
+  image: string;
+  servings: number;
+  cookingTime: number;
+  ingredients: Ingredients;
+}
 
-// Type guard to check if element exists
+const recipeContainer = document.querySelector('.recipe');
+// https://forkify-api.jonas.io/
 if (!recipeContainer) {
   throw new Error('Recipe container not found');
 }
 
-// Timeout function with proper Promise typing
 const timeout = function (s: number): Promise<never> {
   return new Promise(function (
     _: (value: never) => void,
@@ -23,3 +36,34 @@ const timeout = function (s: number): Promise<never> {
     }, s * 1000);
   });
 };
+
+///////////////////////////////////////
+const ShowRecipe = async function (): Promise<void> {
+  try {
+    const res = await fetch(
+      'https://forkify-api.jonas.io/api/v2/recipes/5ed6604591c37cdc054bc886'
+    );
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(`${data.message} (${res.status})`);
+    }
+
+    console.log(res, data);
+    let { recipe } = data.data;
+    recipe = {
+      id: recipe.id,
+      title: recipe.title,
+      publisher: recipe.publisher,
+      sourceUrl: recipe.source_url,
+      image: recipe.image_url,
+      servings: recipe.servings,
+      cookingTime: recipe.cooking_time,
+      ingredients: recipe.ingredients,
+    };
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+ShowRecipe();
