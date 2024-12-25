@@ -1,12 +1,9 @@
-// Define type for HTML element
-const recipeContainer: HTMLElement | null = document.querySelector('.recipe');
+const recipeContainer = document.querySelector('.recipe');
 
-// Type guard to check if element exists
 if (!recipeContainer) {
   throw new Error('Recipe container not found');
 }
 
-// Timeout function with proper Promise typing
 const timeout = function (s: number): Promise<never> {
   return new Promise(function (
     _: (value: never) => void,
