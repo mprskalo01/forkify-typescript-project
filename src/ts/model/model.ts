@@ -21,6 +21,6 @@ export const loadRecipe = async function (id: string): Promise<void> {
       ingredients: apiRecipe.ingredients,
     };
   } catch (error) {
-    console.error(`${error} 💥💥💥💥`);
+    throw error;
   }
 };

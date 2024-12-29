@@ -20,12 +20,8 @@ const controlRecipes = async function (): Promise<void> {
     // 2) Rendering recipe
     if (!model.state.recipe) return;
     recipeView.render(model.state.recipe);
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      console.error(err.message);
-    } else {
-      console.error('An unknown error occurred');
-    }
+  } catch (error) {
+    recipeView.renderError();
   }
 };
 

@@ -5,6 +5,9 @@ import Fraction from 'fraction.js';
 class RecipeView {
   private parentElement = document.querySelector('.recipe') as Element;
   private data!: Recipe; // todo maybe change the ! postfix, good for now
+  private errorMessage: string =
+    'We could not find that recipe. Please try another one!';
+  private successMessage: string = `It's ok!`;
   constructor() {}
 
   render(data: Recipe): void {
@@ -26,7 +29,36 @@ class RecipeView {
             </svg>
           </div> 
     `;
-    this.parentElement.innerHTML = '';
+    this.clear();
+    this.parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+
+  renderError(message: string = this.errorMessage) {
+    const markup = `
+          <div class="error">
+            <div>
+              <svg>
+                <use href="${icons}#icon-alert-triangle"></use>
+              </svg>
+            </div>
+            <p>${message}</p>
+          </div>
+    `;
+    this.clear();
+    this.parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+  renderSuccessMessage(message: string = this.successMessage) {
+    const markup = `
+          <div class="message">
+            <div>
+              <svg>
+                <use href="${icons}#icon-smile"></use>
+              </svg>
+            </div>
+            <p>${message}</p>
+          </div>
+    `;
+    this.clear();
     this.parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
