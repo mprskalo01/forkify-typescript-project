@@ -1,5 +1,37 @@
 interface State {
   recipe: Recipe;
+  search: {
+    query: string;
+    results?: SearchRecipe[];
+  };
+}
+
+interface SearchRecipe {
+  id: string;
+  title: string;
+  publisher: string;
+  image: string;
+}
+interface SearchResponse {
+  status: string;
+  data: ApiRecipe[];
+  results: number;
+}
+
+interface ApiResponse {
+  status: string;
+  message: string;
+  data: {
+    recipe: ApiRecipe;
+    recipes?: ApiRecipe[];
+  };
+  results?: number;
+}
+
+interface Ingredient {
+  quantity: number;
+  unit: string;
+  description: string;
 }
 
 interface ApiRecipe {
@@ -12,21 +44,6 @@ interface ApiRecipe {
   cooking_time: number;
   ingredients: Ingredient[];
 }
-
-interface ApiResponse {
-  status: string;
-  message: string;
-  data: {
-    recipe: ApiRecipe;
-  };
-}
-
-interface Ingredient {
-  quantity: number;
-  unit: string;
-  description: string;
-}
-
 interface Recipe {
   id: string;
   title: string;
@@ -38,4 +55,12 @@ interface Recipe {
   ingredients: Ingredient[];
 }
 
-export { State, ApiRecipe, ApiResponse, Ingredient, Recipe };
+export {
+  State,
+  SearchRecipe,
+  SearchResponse,
+  ApiRecipe,
+  ApiResponse,
+  Ingredient,
+  Recipe,
+};

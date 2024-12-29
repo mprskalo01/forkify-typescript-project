@@ -1,79 +1,28 @@
+import View from './View';
 import icons from 'url:../../img/icons.svg';
-import { Recipe, Ingredient } from '../interfaces/Interfaces';
+import { Ingredient, Recipe } from '../interfaces/Interfaces';
 import Fraction from 'fraction.js';
 
-class RecipeView {
-  private parentElement = document.querySelector('.recipe') as Element;
-  private data!: Recipe; // todo maybe change the ! postfix, good for now
-  private errorMessage: string =
+class RecipeView extends View<Recipe> {
+  protected parentElement = document.querySelector('.recipe') as Element;
+
+  protected errorMessage: string =
     'We could not find that recipe. Please try another one!';
-  private successMessage: string = `It's ok!`;
-  constructor() {}
-
-  render(data: Recipe): void {
-    this.data = data;
-    const markup = this.generateMarkup();
-    this.clear();
-    this.parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-
-  private clear() {
-    this.parentElement.innerHTML = '';
-  }
-
-  renderSpinner(): void {
-    const markup = `
-          <div class="spinner">
-            <svg>
-              <use href="${icons}#icon-loader"></use>
-            </svg>
-          </div> 
-    `;
-    this.clear();
-    this.parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-
-  renderError(message: string = this.errorMessage) {
-    const markup = `
-          <div class="error">
-            <div>
-              <svg>
-                <use href="${icons}#icon-alert-triangle"></use>
-              </svg>
-            </div>
-            <p>${message}</p>
-          </div>
-    `;
-    this.clear();
-    this.parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
-  renderSuccessMessage(message: string = this.successMessage) {
-    const markup = `
-          <div class="message">
-            <div>
-              <svg>
-                <use href="${icons}#icon-smile"></use>
-              </svg>
-            </div>
-            <p>${message}</p>
-          </div>
-    `;
-    this.clear();
-    this.parentElement.insertAdjacentHTML('afterbegin', markup);
-  }
+  protected successMessage: string = `It's ok!`;
 
   addHandlerRender(handler: () => Promise<void>): void {
-    ['hashchange', 'load'].forEach((ev: string): void =>
-      window.addEventListener(ev, handler)
+    ['hashchange', 'load'].forEach((event: string): void =>
+      window.addEventListener(event, handler)
     );
   }
 
-  private generateMarkup(): string {
+  // Implement abstract generateMarkup method
+  protected generateMarkup(): string {
     const recipe = this.data;
     return `<figure class="recipe__fig">
           <img src="${recipe.image}" alt="${
       recipe.title
-    }</" class="recipe__img" />
+    }" class="recipe__img" />
           <h1 class="recipe__title">
             <span>${recipe.title}</span>
           </h1>
@@ -153,7 +102,7 @@ class RecipeView {
         </div>`;
   }
 
-  private generateIngredients(ingredient: Ingredient) {
+  private generateIngredients(ingredient: Ingredient): string {
     return `<li class="recipe__ingredient">
           <svg class="recipe__icon">
             <use href="${icons}#icon-check"></use>

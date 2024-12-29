@@ -1,11 +1,9 @@
 import * as model from './model/model';
 import recipeView from './views/RecipeView';
+import searchView from './views/SearchView';
+import resultsView from './views/ResultsView';
 
-const recipeContainer = document.querySelector('.recipe');
-
-if (!recipeContainer) {
-  throw new Error('Recipe container not found');
-}
+if (module.hot) module.hot.accept;
 
 const controlRecipes = async function (): Promise<void> {
   try {
@@ -25,8 +23,28 @@ const controlRecipes = async function (): Promise<void> {
   }
 };
 
+const controlSearchResults = async function () {
+  try {
+    resultsView.renderSpinner();
+
+    // 1) Get search query
+    const query = searchView.getQuery();
+    if (!query) return;
+
+    // 2) Load search results
+    await model.loadSearchResults(query);
+
+    // 3) Render results
+    if (!model.state.search?.results) return;
+    resultsView.render(model.state.search?.results);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 const init = function (): void {
   recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
 };
 
 init();
