@@ -7,24 +7,7 @@ if (!recipeContainer) {
   throw new Error('Recipe container not found');
 }
 
-const timeout = function (s: number): Promise<never> {
-  return new Promise(function (
-    _: (value: never) => void,
-    reject: (reason?: Error) => void
-  ) {
-    setTimeout(function () {
-      reject(
-        new Error(
-          `Request took too long! Timeout after ${s} second${
-            s !== 1 ? 's' : ''
-          }`
-        )
-      );
-    }, s * 1000);
-  });
-};
-
-const controllRecipes = async function (): Promise<void> {
+const controlRecipes = async function (): Promise<void> {
   try {
     const id = window.location.hash.slice(1);
 
@@ -46,8 +29,8 @@ const controllRecipes = async function (): Promise<void> {
   }
 };
 
-// Listening for hash change
+const init = function (): void {
+  recipeView.addHandlerRender(controlRecipes);
+};
 
-['hashchange', 'load'].forEach((ev): void =>
-  window.addEventListener(ev, controllRecipes)
-);
+init();

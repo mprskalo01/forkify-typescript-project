@@ -1,23 +1,13 @@
-import {
-  State,
-  ApiRecipe,
-  ApiResponse,
-  Ingredient,
-  Recipe,
-} from './Interfaces';
-
+import { State } from '../interfaces/Interfaces';
+import { API_URL } from '../config';
+import { getJSON } from '../helpers';
 export const state: Partial<State> = {};
 
 export const loadRecipe = async function (id: string): Promise<void> {
   try {
-    const res = await fetch(
-      `https://forkify-api.jonas.io/api/v2/recipes/${id}`
-    );
-    const data: ApiResponse = await res.json();
+    const data = await getJSON(`${API_URL}/${id}`);
+    if (!data) return;
 
-    if (!res.ok) {
-      throw new Error(`${data.message} (${res.status})`);
-    }
     const { recipe: apiRecipe } = data.data;
 
     state.recipe = {
@@ -31,6 +21,6 @@ export const loadRecipe = async function (id: string): Promise<void> {
       ingredients: apiRecipe.ingredients,
     };
   } catch (error) {
-    console.log(error);
+    console.error(`${error} 💥💥💥💥`);
   }
 };

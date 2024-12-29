@@ -1,5 +1,5 @@
 import icons from 'url:../../img/icons.svg';
-import { Recipe, Ingredient } from '../model/Interfaces';
+import { Recipe, Ingredient } from '../interfaces/Interfaces';
 import Fraction from 'fraction.js';
 
 class RecipeView {
@@ -28,6 +28,12 @@ class RecipeView {
     `;
     this.parentElement.innerHTML = '';
     this.parentElement.insertAdjacentHTML('afterbegin', markup);
+  }
+
+  addHandlerRender(handler: () => Promise<void>): void {
+    ['hashchange', 'load'].forEach((ev: string): void =>
+      window.addEventListener(ev, handler)
+    );
   }
 
   private generateMarkup(): string {
