@@ -38,7 +38,7 @@ const controlSearchResults = async function () {
 
     // 3) Render results
     model.state.search.page = 1;
-    resultsView.render(model.getSearchResultsPage(model.state.search.page));
+    resultsView.render(model.getSearchResultsPage());
 
     // 4) Render pagination buttons
     paginationView.render(model.state.search);
@@ -47,13 +47,8 @@ const controlSearchResults = async function () {
   }
 };
 
-const controlPagination = function (btn: Element) {
-  if (btn.classList.contains('pagination__btn--next'))
-    model.state.search.page++;
-  if (btn.classList.contains('pagination__btn--prev'))
-    model.state.search.page--;
-
-  resultsView.render(model.getSearchResultsPage(model.state.search.page));
+const controlPagination = function (goToPage: number) {
+  resultsView.render(model.getSearchResultsPage(goToPage));
   paginationView.render(model.state.search);
 };
 

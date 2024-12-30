@@ -5,22 +5,27 @@ import icons from 'url:../../img/icons.svg';
 class PaginationView extends View<Search> {
   protected parentElement = document.querySelector('.pagination') as Element;
 
-  addHandlerClick(handler: (btn: Element) => void) {
+  addHandlerClick(handler: (goToPage: number) => void) {
     this.parentElement.addEventListener('click', function (event: Event) {
       event.preventDefault();
 
       const target = event.target as HTMLElement | null;
       if (!target) return;
 
-      const btn = target.closest('.btn--inline') as Element;
-      if (!btn) return;
-      handler(btn);
+      const btn = target.closest('.btn--inline') as HTMLElement | null;
+      if (!btn || !btn.dataset.goto) return;
+
+      const goToPage: number = parseInt(btn.dataset.goto, 10);
+
+      handler(goToPage);
     });
   }
 
   protected generateMarkup(): string {
     const btnNext: string = `
-    <button class="btn--inline pagination__btn--next">
+    <button data-goto="${
+      this.data.page + 1
+    }" class="btn--inline pagination__btn--next">
               <span>Page ${this.data.page + 1}</span>
               <svg class="search__icon">
                 <use href="${icons}#icon-arrow-right"></use>
@@ -28,7 +33,9 @@ class PaginationView extends View<Search> {
             </button>
             `;
     const btnPrevious: string = `
-     <button class="btn--inline pagination__btn--prev">
+     <button data-goto="${
+       this.data.page - 1
+     }" class="btn--inline pagination__btn--prev">
               <svg class="search__icon">
                 <use href="${icons}#icon-arrow-left"></use>
               </svg>
