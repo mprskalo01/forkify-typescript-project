@@ -13,6 +13,7 @@ class PaginationView extends View<Search> {
       if (!target) return;
 
       const btn = target.closest('.btn--inline') as Element;
+      if (!btn) return;
       handler(btn);
     });
   }
