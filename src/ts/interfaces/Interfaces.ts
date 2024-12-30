@@ -1,13 +1,14 @@
 interface State {
   recipe?: Recipe;
-  search: {
-    query: string;
-    results: SearchRecipe[];
-    page: number;
-    resultsPerPage: number;
-  };
+  search: Search;
 }
 
+interface Search {
+  query: string;
+  results: SearchRecipe[];
+  page: number;
+  resultsPerPage: number;
+}
 interface SearchRecipe {
   id: string;
   title: string;
@@ -60,6 +61,7 @@ interface Recipe {
 export {
   State,
   SearchRecipe,
+  Search,
   SearchResponse,
   ApiRecipe,
   ApiResponse,

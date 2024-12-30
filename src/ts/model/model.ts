@@ -35,8 +35,6 @@ export const loadRecipe = async function (id: string): Promise<void> {
 
 export const loadSearchResults = async function (query: string) {
   try {
-    if (!state.search?.results) return;
-
     state.search.query = query;
     const data = await getJSON(`${API_URL}?search=${query}`);
 
