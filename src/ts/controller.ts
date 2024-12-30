@@ -37,6 +37,7 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
 
     // 3) Render results
+    model.state.search.page = 1;
     resultsView.render(model.getSearchResultsPage(model.state.search.page));
 
     // 4) Render pagination buttons
