@@ -18,9 +18,7 @@ const timeout = function (s: number): Promise<never> {
   });
 };
 
-export const getJSON = async function (
-  url: string
-): Promise<ApiResponse | undefined> {
+export const getJSON = async function (url: string): Promise<ApiResponse> {
   try {
     const res = await Promise.race([fetch(url), timeout(TIMEOUT_SECONDS)]);
     const data: ApiResponse = await res.json();

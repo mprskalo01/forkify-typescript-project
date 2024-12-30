@@ -1,16 +1,13 @@
-import {
-  ApiRecipe,
-  Recipe,
-  SearchRecipe,
-  State,
-} from '../interfaces/Interfaces';
-import { API_URL } from '../config';
+import { ApiRecipe, SearchRecipe, State } from '../interfaces/Interfaces';
+import { API_URL, RESULTS_PER_PAGE } from '../config';
 import { getJSON } from '../helpers';
 
-export const state: Partial<State> = {
+export const state: State = {
   search: {
     query: '',
     results: [],
+    page: 1,
+    resultsPerPage: RESULTS_PER_PAGE,
   },
 };
 
@@ -43,7 +40,7 @@ export const loadSearchResults = async function (query: string) {
     state.search.query = query;
     const data = await getJSON(`${API_URL}?search=${query}`);
 
-    state.search.results = data?.data.recipes?.map(
+    state.search.results = data.data.recipes.map(
       (recipe: ApiRecipe): SearchRecipe => {
         return {
           id: recipe.id,
@@ -56,4 +53,15 @@ export const loadSearchResults = async function (query: string) {
   } catch (error) {
     throw error;
   }
+};
+
+export const getSearchResultsPage = function (
+  page: number = state.search.page
+): SearchRecipe[] {
+  state.search.page = page;
+
+  const start = (page - 1) * state.search.resultsPerPage; //  0;
+  const end = page * state.search.resultsPerPage; // 9;
+
+  return state.search.results.slice(start, end);
 };

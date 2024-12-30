@@ -1,8 +1,10 @@
 interface State {
-  recipe: Recipe;
+  recipe?: Recipe;
   search: {
     query: string;
-    results?: SearchRecipe[];
+    results: SearchRecipe[];
+    page: number;
+    resultsPerPage: number;
   };
 }
 
@@ -23,7 +25,7 @@ interface ApiResponse {
   message: string;
   data: {
     recipe: ApiRecipe;
-    recipes?: ApiRecipe[];
+    recipes: ApiRecipe[];
   };
   results?: number;
 }

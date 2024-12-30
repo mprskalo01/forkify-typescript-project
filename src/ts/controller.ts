@@ -24,6 +24,7 @@ const controlRecipes = async function (): Promise<void> {
 };
 
 const controlSearchResults = async function () {
+  // event?.preventDefault();
   try {
     resultsView.renderSpinner();
 
@@ -36,7 +37,8 @@ const controlSearchResults = async function () {
 
     // 3) Render results
     if (!model.state.search?.results) return;
-    resultsView.render(model.state.search?.results);
+
+    resultsView.render(model.getSearchResultsPage(1));
   } catch (error) {
     console.error(error);
   }
