@@ -29,7 +29,7 @@ This repository showcases my TypeScript implementation of the Forkify project fr
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/forkify-typescript.git
+   git clone https://github.com/marioprskalo01/forkify-typescript-project.git
    ```
 2. Install dependencies:
    ```bash
