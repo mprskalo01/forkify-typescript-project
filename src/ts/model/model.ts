@@ -63,3 +63,7 @@ export const getSearchResultsPage = function (
 
   return state.search.results.slice(start, end);
 };
+
+export const updateServings = function (newServings: number) {
+  
+};
