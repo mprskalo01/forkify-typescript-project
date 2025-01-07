@@ -1,6 +1,7 @@
 interface State {
   recipe: Recipe;
   search: Search;
+  bookmarks: Recipe[];
 }
 
 interface Search {
@@ -56,6 +57,7 @@ interface Recipe {
   servings: number;
   cookingTime: number;
   ingredients: Ingredient[];
+  bookmarked: boolean;
 }
 
 export {
