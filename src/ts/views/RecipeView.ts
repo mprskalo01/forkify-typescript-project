@@ -16,7 +16,17 @@ class RecipeView extends View<Recipe> {
     );
   }
 
-  // Implement abstract generateMarkup method
+  addHandlerUpdateServings(handler: (newServings: number) => void): void {
+    this.parentElement.addEventListener('click', function (event) {
+      const btn = (event.target as HTMLElement).closest(
+        '.btn--update'
+      ) as HTMLElement;
+      if (!btn || !btn.dataset.updateTo) return;
+      const { updateTo } = btn.dataset;
+      if (+updateTo > 0) handler(+updateTo);
+    });
+  }
+
   protected generateMarkup(): string {
     const recipe = this.data;
     return `<figure class="recipe__fig">
@@ -48,12 +58,16 @@ class RecipeView extends View<Recipe> {
             <span class="recipe__info-text">servings</span>
 
             <div class="recipe__info-buttons">
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--update" data-update-to="${
+                recipe.servings - 1
+              }">
                 <svg>
                   <use href="${icons}#icon-minus-circle"></use>
                 </svg>
               </button>
-              <button class="btn--tiny btn--increase-servings">
+              <button class="btn--tiny btn--update" data-update-to="${
+                recipe.servings + 1
+              }">
                 <svg>
                   <use href="${icons}#icon-plus-circle"></use>
                 </svg>

@@ -3,6 +3,16 @@ import { API_URL, RESULTS_PER_PAGE } from '../config';
 import { getJSON } from '../helpers';
 
 export const state: State = {
+  recipe: {
+    id: 'id',
+    title: 'title',
+    publisher: 'publisher',
+    sourceUrl: 'source_url',
+    image: 'image_url',
+    servings: 2,
+    cookingTime: 0,
+    ingredients: [],
+  },
   search: {
     query: '',
     results: [],
@@ -64,6 +74,12 @@ export const getSearchResultsPage = function (
   return state.search.results.slice(start, end);
 };
 
+// with side effect, could use map for no side effect
 export const updateServings = function (newServings: number) {
-  
+  state.recipe.ingredients.forEach((ingredient) => {
+    ingredient.quantity =
+      (ingredient.quantity * newServings) / state.recipe.servings;
+  });
+
+  state.recipe.servings = newServings;
 };

@@ -1,5 +1,5 @@
 interface State {
-  recipe?: Recipe;
+  recipe: Recipe;
   search: Search;
 }
 
@@ -62,7 +62,6 @@ export {
   State,
   SearchRecipe,
   Search,
-  SearchResponse,
   ApiRecipe,
   ApiResponse,
   Ingredient,
