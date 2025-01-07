@@ -19,6 +19,35 @@ export default abstract class View<T> {
     this.parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
+  update(data: T) {
+    this.data = data;
+
+    const newMarkup = this.generateMarkup();
+    const newDOM = document.createRange().createContextualFragment(newMarkup);
+    const newElements = Array.from(newDOM.querySelectorAll('*'));
+    const currentElements = Array.from(
+      this.parentElement.querySelectorAll('*')
+    );
+    newElements.forEach((newElement, index) => {
+      const currentElement = currentElements[index];
+
+      // Updates changed TEXT
+      if (
+        !newElement.isEqualNode(currentElement) &&
+        newElement.firstChild?.nodeValue!.trim() !== ''
+      ) {
+        currentElement.textContent = newElement.textContent;
+      }
+
+      // Updates changed ATTRIBUTES
+      if (!newElement.isEqualNode(currentElement)) {
+        Array.from(newElement.attributes).forEach((newAttribute) =>
+          currentElement.setAttribute(newAttribute.name, newAttribute.value)
+        );
+      }
+    });
+  }
+
   protected clear() {
     this.parentElement.innerHTML = '';
   }

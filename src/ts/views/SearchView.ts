@@ -16,9 +16,13 @@ class SearchView extends View<void> {
     this.searchField.value = '';
   }
 
-  addHandlerSearch(handler: () => Promise<void>): void {
+  addHandlerSearch(handler: (event: Event) => Promise<void>): void {
     this.parentElement.addEventListener('submit', handler);
   }
+
+  // addHandlerSearch(handler: () => Promise<void>): void {
+  //   this.parentElement.addEventListener('submit', handler);
+  // }
 
   protected generateMarkup(): string {
     return '';
