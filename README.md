@@ -44,7 +44,6 @@ This repository showcases my TypeScript implementation of the Forkify project fr
 
 - Add unit tests.
 - Enhance UI/UX with features like dark mode.
-- Optimize TypeScript types.
 
 ## Acknowledgments
 

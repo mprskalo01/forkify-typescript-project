@@ -8,7 +8,10 @@ class BookmarksView extends View<SearchRecipe[]> {
   ) as Element;
   protected errorMessage: string =
     'No bookmarks yet. Find a good recipe to bookmark!';
-  // protected successMessage: string = `It's ok!`;
+
+  addHandlerRender(handler: () => void): void {
+    window.addEventListener('load', handler);
+  }
 
   protected generateMarkup(): string {
     return this.data
@@ -18,17 +21,3 @@ class BookmarksView extends View<SearchRecipe[]> {
 }
 
 export default new BookmarksView();
-
-// <li class="preview">
-//                     <a class="preview__link" href="#23456">
-//                       <figure class="preview__fig">
-//                         <img src="src/img/test-1.jpg" alt="Test" />
-//                       </figure>
-//                       <div class="preview__data">
-//                         <h4 class="preview__name">
-//                           Pasta with Tomato Cream ...
-//                         </h4>
-//                         <p class="preview__publisher">The Pioneer Woman</p>
-//                       </div>
-//                     </a>
-//                   </li>
