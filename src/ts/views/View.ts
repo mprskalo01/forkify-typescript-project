@@ -10,11 +10,14 @@ export default abstract class View<T> {
 
   protected abstract generateMarkup(data?: T): string;
 
-  render(data: T): void {
+  render(data: T, isRender: boolean = true): void | string {
     if (!data || (Array.isArray(data) && data.length === 0))
       return this.renderError();
     this.data = data;
     const markup = this.generateMarkup();
+
+    if (!isRender) return markup;
+
     this.clear();
     this.parentElement.insertAdjacentHTML('afterbegin', markup);
   }
