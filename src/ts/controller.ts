@@ -4,6 +4,7 @@ import searchView from './views/SearchView';
 import resultsView from './views/ResultsView';
 import paginationView from './views/PaginationView';
 import bookmarksView from './views/BookmarksView';
+import addRecipeView from './views/AddRecipeView';
 
 if (module.hot) module.hot.accept;
 
@@ -79,6 +80,14 @@ const controlBookmarks = function (): void {
   bookmarksView.render(model.state.bookmarks);
 };
 
+const controlAddRecipe = function (newRecipe: {
+  [k: string]: FormDataEntryValue;
+}) {
+  console.log(newRecipe);
+
+  // Upload new Recipe data
+};
+
 const init = function (): void {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
@@ -86,6 +95,9 @@ const init = function (): void {
   recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagination);
+  addRecipeView.addHandlerShowWindow();
+  addRecipeView.addHandlerCloseWindow();
+  addRecipeView.addHandlerUpload(controlAddRecipe);
 };
 
 init();

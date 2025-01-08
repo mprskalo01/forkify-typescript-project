@@ -127,11 +127,10 @@ export const deleteBookmark = function (id: string): void {
 const init = function (): void {
   const storage = localStorage.getItem('bookmarks');
   if (storage) state.bookmarks = JSON.parse(storage);
-  console.log(state.bookmarks);
 };
 
 init();
 
-const clearBookmarks = function (): void {
-  localStorage.clear();
-};
+// const clearBookmarks = function (): void {
+//   localStorage.clear();
+// };
