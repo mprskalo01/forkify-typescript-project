@@ -2,7 +2,7 @@
   "homepage": "https://mprskalo01.github.io/forkify-typescript-project",
   "scripts": {
     "start": "npx parcel index.html",
-    "predeploy": "npx parcel build index.html --dist-dir dist --public-url /forkify-typescript-project/",
+    "predeploy": "npx parcel build index.html --dist-dir dist --public-url ./",
     "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
