@@ -1,6 +1,6 @@
 import { Search } from '../interfaces/Interfaces';
 import View from './View';
-const icons = '/img/icons.svg';
+const icons = '/public/img/icons.svg';
 
 class PaginationView extends View<Search> {
   protected parentElement = document.querySelector('.pagination') as Element;

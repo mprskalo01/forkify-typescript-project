@@ -1,5 +1,5 @@
 import View from './View';
-const icons = '/img/icons.svg';
+const icons = '/public/img/icons.svg';
 import { Ingredient, Recipe } from '../interfaces/Interfaces';
 import Fraction from 'fraction.js';
 
