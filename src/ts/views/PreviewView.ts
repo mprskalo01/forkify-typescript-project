@@ -1,6 +1,6 @@
 import { SearchRecipe } from '../interfaces/Interfaces';
 import View from './View';
-import icons from 'url:../../img/icons.svg';
+const icons = '/img/icons.svg';
 
 class PreviewView extends View<SearchRecipe> {
   protected parentElement = document.querySelector('.d') as HTMLElement;

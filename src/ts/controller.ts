@@ -13,7 +13,7 @@ document
   .querySelector('.header__logo')!
   .addEventListener('click', (event): void => {
     event.preventDefault();
-    window.location.href = '/';
+    window.location.href = 'https://mprskalo01.github.io/forkify-typescript-project/';
   });
 
 const controlRecipes = async function (): Promise<void> {
