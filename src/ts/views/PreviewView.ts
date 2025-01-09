@@ -1,5 +1,6 @@
 import { SearchRecipe } from '../interfaces/Interfaces';
 import View from './View';
+import icons from 'url:../../img/icons.svg';
 
 class PreviewView extends View<SearchRecipe> {
   protected parentElement = document.querySelector('.d') as HTMLElement;
@@ -21,6 +22,13 @@ class PreviewView extends View<SearchRecipe> {
                           ${this.data.title}
                         </h4>
                         <p class="preview__publisher">${this.data.publisher}</p>
+                         <div class="recipe__user-generated ${
+                           this.data.key ? '' : 'hidden'
+                         }">
+                          <svg>
+                            <use href="${icons}#icon-user"></use>
+                          </svg>
+                        </div>
                       </div>
                     </a>
                   </li>              

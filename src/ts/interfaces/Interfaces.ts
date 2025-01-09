@@ -15,6 +15,7 @@ interface SearchRecipe {
   title: string;
   publisher: string;
   image: string;
+  key?: string;
 }
 interface SearchResponse {
   status: string;
@@ -62,6 +63,15 @@ interface Recipe {
   key?: string;
 }
 
+interface POSTRecipe {
+  title: FormDataEntryValue;
+  source_url: FormDataEntryValue;
+  image_url: FormDataEntryValue;
+  publisher: FormDataEntryValue;
+  cooking_time: number;
+  servings: number;
+}
+
 export {
   State,
   SearchRecipe,
@@ -70,4 +80,5 @@ export {
   ApiResponse,
   Ingredient,
   Recipe,
+  POSTRecipe,
 };

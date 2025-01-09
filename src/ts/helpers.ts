@@ -1,5 +1,5 @@
 import { TIMEOUT_SECONDS } from './config';
-import { ApiResponse } from './interfaces/Interfaces';
+import { ApiResponse, POSTRecipe } from './interfaces/Interfaces';
 
 const timeout = function (s: number): Promise<never> {
   return new Promise(function (
@@ -18,7 +18,10 @@ const timeout = function (s: number): Promise<never> {
   });
 };
 
-export const AJAX = async function (url: string, uploadData = undefined) {
+export const AJAX = async function (
+  url: string,
+  uploadData: POSTRecipe | undefined = undefined
+) {
   const fetchPro = uploadData
     ? fetch(url, {
         method: 'POST',
@@ -31,39 +34,7 @@ export const AJAX = async function (url: string, uploadData = undefined) {
   try {
     const res = await Promise.race([fetchPro, timeout(TIMEOUT_SECONDS)]);
     const data: ApiResponse = await res.json();
-    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-    return data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-export const getJSON = async function (url: string): Promise<ApiResponse> {
-  try {
-    const res = await Promise.race([fetch(url), timeout(TIMEOUT_SECONDS)]);
-    const data: ApiResponse = await res.json();
-    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-    return data;
-  } catch (error) {
-    throw error;
-  }
-};
-
-// todo change any type
-export const sendJSON = async function (
-  url: string,
-  uploadData: any
-): Promise<ApiResponse> {
-  try {
-    const fetchPro = fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(uploadData),
-    });
-    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SECONDS)]);
-    const data: ApiResponse = await res.json();
+    
     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
     return data;
   } catch (error) {

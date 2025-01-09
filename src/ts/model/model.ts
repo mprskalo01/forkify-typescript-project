@@ -6,7 +6,7 @@ import {
   State,
 } from '../interfaces/Interfaces';
 import { API_URL, API_KEY, RESULTS_PER_PAGE } from '../config';
-import { getJSON, sendJSON } from '../helpers';
+import { AJAX } from '../helpers';
 
 export const state: State = {
   recipe: {
@@ -47,7 +47,7 @@ const createRecipeObject = function (data: ApiResponse): Recipe {
 
 export const loadRecipe = async function (id: string): Promise<void> {
   try {
-    const data = await getJSON(`${API_URL}${id}`);
+    const data = await AJAX(`${API_URL}${id}?key=${API_KEY}`);
     if (!data) return;
 
     state.recipe = createRecipeObject(data);
@@ -63,7 +63,7 @@ export const loadRecipe = async function (id: string): Promise<void> {
 export const loadSearchResults = async function (query: string) {
   try {
     state.search.query = query;
-    const data = await getJSON(`${API_URL}?search=${query}`);
+    const data = await AJAX(`${API_URL}?search=${query}&key=${API_KEY}`);
 
     state.search.results = data.data.recipes.map(
       (recipe: ApiRecipe): SearchRecipe => {
@@ -72,6 +72,7 @@ export const loadSearchResults = async function (query: string) {
           title: recipe.title,
           publisher: recipe.publisher,
           image: recipe.image_url,
+          ...(recipe.key && { key: recipe.key }),
         };
       }
     );
@@ -135,11 +136,6 @@ const init = function (): void {
 
 init();
 
-// const clearBookmarks = function (): void {
-//   localStorage.clear();
-// };
-// clearBookmarks();
-
 export const uploadRecipe = async function (newRecipe: {
   [k: string]: FormDataEntryValue;
 }) {
@@ -149,7 +145,9 @@ export const uploadRecipe = async function (newRecipe: {
       .map((ingredient) => {
         const value = String(ingredient[1]);
 
-        const ingredientsArray = value.replace(/\s+/g, '').split(',');
+        const ingredientsArray = value
+          .split(',')
+          .map((element) => element.trim());
         if (ingredientsArray.length !== 3)
           throw new Error(
             'Wrong ingredient input! Please use the correct format.'
@@ -169,10 +167,15 @@ export const uploadRecipe = async function (newRecipe: {
       ingredients,
     };
 
-    const data = await sendJSON(`${API_URL}?key=${API_KEY}`, recipe);
+    const data = await AJAX(`${API_URL}?key=${API_KEY}`, recipe);
     state.recipe = createRecipeObject(data);
     addBookmark(state.recipe);
   } catch (error) {
     throw error;
   }
 };
+
+// const clearBookmarks = function (): void {
+//   localStorage.clear();
+// };
+// clearBookmarks();

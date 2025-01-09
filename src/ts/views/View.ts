@@ -1,7 +1,7 @@
 import icons from 'url:../../img/icons.svg';
 
 export default abstract class View<T> {
-  protected data!: T; // todo maybe change ! postfix
+  protected data!: T;
 
   protected abstract parentElement: Element;
 
