@@ -18,9 +18,51 @@ const timeout = function (s: number): Promise<never> {
   });
 };
 
+export const AJAX = async function (url: string, uploadData = undefined) {
+  const fetchPro = uploadData
+    ? fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(uploadData),
+      })
+    : fetch(url);
+  try {
+    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SECONDS)]);
+    const data: ApiResponse = await res.json();
+    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const getJSON = async function (url: string): Promise<ApiResponse> {
   try {
     const res = await Promise.race([fetch(url), timeout(TIMEOUT_SECONDS)]);
+    const data: ApiResponse = await res.json();
+    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
+    return data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+// todo change any type
+export const sendJSON = async function (
+  url: string,
+  uploadData: any
+): Promise<ApiResponse> {
+  try {
+    const fetchPro = fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(uploadData),
+    });
+    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SECONDS)]);
     const data: ApiResponse = await res.json();
     if (!res.ok) throw new Error(`${data.message} (${res.status})`);
     return data;

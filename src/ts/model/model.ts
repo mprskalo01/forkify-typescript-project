@@ -1,11 +1,12 @@
 import {
   ApiRecipe,
+  ApiResponse,
   Recipe,
   SearchRecipe,
   State,
 } from '../interfaces/Interfaces';
-import { API_URL, RESULTS_PER_PAGE } from '../config';
-import { getJSON } from '../helpers';
+import { API_URL, API_KEY, RESULTS_PER_PAGE } from '../config';
+import { getJSON, sendJSON } from '../helpers';
 
 export const state: State = {
   recipe: {
@@ -28,29 +29,32 @@ export const state: State = {
   bookmarks: [],
 };
 
+const createRecipeObject = function (data: ApiResponse): Recipe {
+  const { recipe: apiRecipe } = data.data;
+  state.recipe = {
+    id: apiRecipe.id,
+    title: apiRecipe.title,
+    publisher: apiRecipe.publisher,
+    sourceUrl: apiRecipe.source_url,
+    image: apiRecipe.image_url,
+    servings: apiRecipe.servings,
+    cookingTime: apiRecipe.cooking_time,
+    ingredients: apiRecipe.ingredients,
+    ...(apiRecipe.key && { key: apiRecipe.key }),
+  };
+  return state.recipe;
+};
+
 export const loadRecipe = async function (id: string): Promise<void> {
   try {
     const data = await getJSON(`${API_URL}${id}`);
     if (!data) return;
 
-    const { recipe: apiRecipe } = data.data;
+    state.recipe = createRecipeObject(data);
 
-    state.recipe = {
-      id: apiRecipe.id,
-      title: apiRecipe.title,
-      publisher: apiRecipe.publisher,
-      sourceUrl: apiRecipe.source_url,
-      image: apiRecipe.image_url,
-      servings: apiRecipe.servings,
-      cookingTime: apiRecipe.cooking_time,
-      ingredients: apiRecipe.ingredients,
-      bookmarked: state.bookmarks.some((bookmark) => bookmark.id === id)
-        ? true
-        : false,
-    };
-    // if (state.bookmarks.some((bookmark) => bookmark.id === id))
-    //   state.recipe.bookmarked = true;
-    // else state.recipe.bookmarked = false;
+    if (state.bookmarks.some((bookmark) => bookmark.id === id))
+      state.recipe.bookmarked = true;
+    else state.recipe.bookmarked = false;
   } catch (error) {
     throw error;
   }
@@ -134,3 +138,41 @@ init();
 // const clearBookmarks = function (): void {
 //   localStorage.clear();
 // };
+// clearBookmarks();
+
+export const uploadRecipe = async function (newRecipe: {
+  [k: string]: FormDataEntryValue;
+}) {
+  try {
+    const ingredients = Object.entries(newRecipe)
+      .filter((entry) => entry[0].startsWith('ingredient') && entry[1] !== '')
+      .map((ingredient) => {
+        const value = String(ingredient[1]);
+
+        const ingredientsArray = value.replace(/\s+/g, '').split(',');
+        if (ingredientsArray.length !== 3)
+          throw new Error(
+            'Wrong ingredient input! Please use the correct format.'
+          );
+        const [quantity, unit, description] = ingredientsArray;
+
+        return { quantity: quantity ? +quantity : null, unit, description };
+      });
+
+    const recipe = {
+      title: newRecipe.title,
+      source_url: newRecipe.sourceUrl,
+      image_url: newRecipe.image,
+      publisher: newRecipe.publisher,
+      cooking_time: +newRecipe.cookingTime,
+      servings: +newRecipe.servings,
+      ingredients,
+    };
+
+    const data = await sendJSON(`${API_URL}?key=${API_KEY}`, recipe);
+    state.recipe = createRecipeObject(data);
+    addBookmark(state.recipe);
+  } catch (error) {
+    throw error;
+  }
+};

@@ -5,6 +5,7 @@ import resultsView from './views/ResultsView';
 import paginationView from './views/PaginationView';
 import bookmarksView from './views/BookmarksView';
 import addRecipeView from './views/AddRecipeView';
+import { MODAL_CLOSE_SEC } from './config';
 
 if (module.hot) module.hot.accept;
 
@@ -80,12 +81,36 @@ const controlBookmarks = function (): void {
   bookmarksView.render(model.state.bookmarks);
 };
 
-const controlAddRecipe = function (newRecipe: {
+const controlAddRecipe = async function (newRecipe: {
   [k: string]: FormDataEntryValue;
 }) {
-  console.log(newRecipe);
+  try {
+    // ShowLoadingSpinner
+    addRecipeView.renderSpinner();
 
-  // Upload new Recipe data
+    // Upload new Recipe data
+    await model.uploadRecipe(newRecipe);
+    console.log(model.state.recipe);
+
+    // Render recipe
+    recipeView.render(model.state.recipe);
+
+    // Render succes message
+    addRecipeView.renderSuccessMessage();
+
+    // Render bookmark view
+    bookmarksView.render(model.state.bookmarks);
+
+    // Change ID in URL
+    window.history.pushState(null, '', `#${model.state.recipe.id}`);
+
+    // Close form window
+    setTimeout(function () {
+      addRecipeView.toggleWindow();
+    }, MODAL_CLOSE_SEC * 1000);
+  } catch (error) {
+    addRecipeView.renderError((error as Error).message);
+  }
 };
 
 const init = function (): void {

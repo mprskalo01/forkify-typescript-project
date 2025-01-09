@@ -47,6 +47,7 @@ interface ApiRecipe {
   servings: number;
   cooking_time: number;
   ingredients: Ingredient[];
+  key?: string;
 }
 interface Recipe {
   id: string;
@@ -57,7 +58,8 @@ interface Recipe {
   servings: number;
   cookingTime: number;
   ingredients: Ingredient[];
-  bookmarked: boolean;
+  bookmarked?: boolean;
+  key?: string;
 }
 
 export {

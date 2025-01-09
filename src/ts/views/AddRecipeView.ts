@@ -11,18 +11,22 @@ class AddRecipeView extends View<Recipe> {
     '.nav__btn--add-recipe'
   ) as Element;
   protected btnClose = document.querySelector('.btn--close-modal') as Element;
+  protected successMessage = 'Recipe was successfully uploaded.';
+
+  toggleWindow() {
+    this.overlay.classList.toggle('hidden');
+    this.window.classList.toggle('hidden');
+  }
 
   addHandlerShowWindow(): void {
     this.btnOpen.addEventListener('click', () => {
-      this.overlay.classList.toggle('hidden');
-      this.window.classList.toggle('hidden');
+      this.toggleWindow();
     });
   }
 
   addHandlerCloseWindow(): void {
     this.btnClose.addEventListener('click', () => {
-      this.overlay.classList.toggle('hidden');
-      this.window.classList.toggle('hidden');
+      this.toggleWindow();
     });
   }
 
