@@ -1,6 +1,9 @@
 {
+  "homepage": "https://mprskalo01.github.io/forkify-typescript-project",
   "scripts": {
-    "start": "npx parcel index.html"
+    "start": "npx parcel index.html",
+    "predeploy": "parcel build index.html --dist-dir dist --public-url /the-odin-calculator/",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@parcel/transformer-sass": "^2.13.3",
@@ -8,6 +11,7 @@
   },
   "dependencies": {
     "@types/webpack-env": "^1.18.5",
-    "fraction.js": "^5.2.1"
+    "fraction.js": "^5.2.1",
+    "gh-pages": "^6.3.0"
   }
 }
