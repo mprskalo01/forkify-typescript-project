@@ -9,6 +9,13 @@ import { MODAL_CLOSE_SEC } from './config';
 
 if (module.hot) module.hot.accept;
 
+document
+  .querySelector('.header__logo')!
+  .addEventListener('click', (event): void => {
+    event.preventDefault();
+    window.location.href = '/';
+  });
+
 const controlRecipes = async function (): Promise<void> {
   try {
     const id = window.location.hash.slice(1);
