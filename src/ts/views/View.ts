@@ -1,4 +1,4 @@
-const icons = '/public/img/icons.svg';
+const icons = '/img/icons.svg';
 
 export default abstract class View<T> {
   protected data!: T;
