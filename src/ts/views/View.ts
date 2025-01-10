@@ -1,5 +1,4 @@
-const icons = '/img/icons.svg';
-
+import icons from 'url:../../img/icons.svg';
 export default abstract class View<T> {
   protected data!: T;
 
