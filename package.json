@@ -1,4 +1,5 @@
 {
+  "homepage": "https://mprskalo01.github.io/forkify-typescript-project",
   "default": "index.html",
   "scripts": {
     "start": "npx parcel index.html",
